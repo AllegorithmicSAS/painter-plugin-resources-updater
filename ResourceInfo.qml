@@ -41,7 +41,7 @@ AlgPopup
 	{
 		anchors.centerIn: parent
 		width: parent.width * 0.8
-		height: infosList.height + Style.margin*2
+		height: content.height
 		
 		border.color: AlgStyle.background.color.light //#494949
 		border.width: Style.borderWidth
@@ -56,6 +56,7 @@ AlgPopup
 
 		ColumnLayout
 		{
+			id: content
 			width: parent.width
 			anchors {
 				verticalCenter: parent.verticalCenter;
@@ -63,8 +64,7 @@ AlgPopup
 			
 			RowLayout
 			{
-				Layout.leftMargin: Style.margin
-				Layout.rightMargin: Style.margin
+				Layout.margins: Style.margin
 
 				Image
 				{

@@ -71,8 +71,10 @@ Rectangle
 						source: image
 						fillMode: Image.PreserveAspectFit
 						mipmap:true
-						Layout.preferredHeight: resourceItem.height - Style.margin*2
-						Layout.preferredWidth: resourceItem.height - Style.margin*2
+						anchors.top: parent.top
+						anchors.bottom: parent.bottom
+						anchors.margins: Style.margin
+						Layout.preferredWidth: height
 
 						MouseArea {
 							anchors.fill: parent
