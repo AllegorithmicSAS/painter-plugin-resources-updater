@@ -60,15 +60,19 @@ AlgWindow
 					text: "Project : "
 				}
 
-				AlgCheckBox
+				AlgButton
 				{
-					checked: false
-					text: "Keep window on top"
+					property bool pinState: false
+					text: pinState ? "Unpin window" : "Pin window"
 					Layout.alignment: Qt.AlignRight
-
+					Layout.rightMargin: Style.margin
+					Layout.preferredWidth: Style.widgets.buttonWidth
+					
 					onClicked:
 					{
-						if( checked ) {
+						pinState = !pinState
+						
+						if( pinState ) {
 							// Add the flag "keep window on top"
 							window.flags |= Qt.WindowStaysOnTopHint;
 						} else {
@@ -235,11 +239,11 @@ AlgWindow
 	
 	function getFilterMode() {
 		switch(statusFilter.currentIndex) {
-		case 0: 
+		case 0:
 			return resourcesListView.filter_ALL
-		case 1: 
+		case 1:
 			return resourcesListView.filter_OUTDATED
-		case 2: 
+		case 2:
 			return resourcesListView.filter_NO_OUTDATED
 		}
 	}
