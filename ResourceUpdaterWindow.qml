@@ -36,15 +36,17 @@ AlgWindow
 		Rectangle
 		{
 			id: titleBar
-			Layout.preferredWidth: parent.width
+			anchors.left: parent.left
+			anchors.right: parent.right
 			height: Style.widgets.barHeight
 
 			color: AlgStyle.background.color.darkGray //#252525
 
 			RowLayout
 			{
-				width: parent.width
 				anchors {
+					left: parent.left
+					right: parent.right
 					verticalCenter: parent.verticalCenter;
 				}
 				
@@ -82,7 +84,8 @@ AlgWindow
 		Rectangle
 		{
 			id: filteringBar
-			Layout.preferredWidth: parent.width
+			anchors.left: parent.left
+			anchors.right: parent.right
 			height: Style.widgets.barHeight
 			
 			color: AlgStyle.background.color.normal //#323232
@@ -180,7 +183,8 @@ AlgWindow
 		
 		Rectangle
 		{
-			Layout.preferredWidth: parent.width
+			anchors.left: parent.left
+			anchors.right: parent.right
 			height: Style.widgets.barHeight
 			Layout.bottomMargin: Style.margin
 			
