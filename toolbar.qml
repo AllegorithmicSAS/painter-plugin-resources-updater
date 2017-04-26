@@ -38,14 +38,13 @@ Row
 			try
 			{
 				windowReference.visible = true
-				windowReference.hidePopup()
-				windowReference.listOutdatedResources()
+				windowReference.refreshInterface()
 				windowReference.raise()
 				windowReference.requestActivate()
 			}
 			catch(err)
 			{
-				alg.log.exception( err )
+				alg.log.exception(err)
 			}
 		}
 	}
