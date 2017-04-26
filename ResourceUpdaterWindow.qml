@@ -26,7 +26,6 @@ AlgWindow
 		| Qt.WindowSystemMenuHint // Recquired to add buttons
 		| Qt.WindowMinMaxButtonsHint // minimize and maximize button
 		| Qt.WindowCloseButtonHint // close button
-		| Qt.WindowStaysOnTopHint;
 
 
 	ColumnLayout
@@ -61,7 +60,7 @@ AlgWindow
 
 				AlgCheckBox
 				{
-					checked: true
+					checked: false
 					text: "Keep window on top"
 					Layout.alignment: Qt.AlignRight
 
@@ -105,15 +104,15 @@ AlgWindow
 				{
 					id: statusFilter
 					Layout.preferredWidth: Style.widgets.buttonWidth
+					Layout.preferredHeight: textFilter.height
 
 					model: ["All", "Outdated", "Non-Outdated"]
 
 					onCurrentIndexChanged:
 					{
-						refreshInterface()
+						resourcesListView.current_filter = getFilterMode()
 					}
 				}
-				
 				
 				AlgLabel
 				{
@@ -130,7 +129,6 @@ AlgWindow
 					onTextChanged:
 					{
 						resourcesListView.filter_text = text
-						refreshInterface()
 					}
 				}
 				
@@ -184,6 +182,7 @@ AlgWindow
 		{
 			Layout.preferredWidth: parent.width
 			height: Style.widgets.barHeight
+			Layout.bottomMargin: Style.margin
 			
 			color: AlgStyle.background.color.normal //#323232
 			
@@ -196,8 +195,9 @@ AlgWindow
 				
 				AlgButton
 				{
-					Layout.leftMargin: Style.margin
 					text: "Refresh"
+					Layout.leftMargin: Style.margin
+					Layout.preferredHeight: 30
 					
 					onClicked:
 					{
@@ -217,6 +217,7 @@ AlgWindow
 				AlgButton
 				{
 					text: "Update All"
+					Layout.preferredHeight: 30
 					Layout.rightMargin: Style.margin
 					
 					onClicked:
@@ -243,7 +244,6 @@ AlgWindow
 		try {
 			projectName.text = "Project : "
 			
-			resourcesListView.current_filter = getFilterMode()
 			resourcesListView.updateResourcesList()
 			resourcesListView.scrollResourcesListToTop()
 

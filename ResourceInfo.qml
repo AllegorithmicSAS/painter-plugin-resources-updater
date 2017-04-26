@@ -12,7 +12,7 @@ import "."
 
 AlgPopup
 {
-	id: resourceInfos
+	id: resourceInfo
 	width: parent.width
 	height: scrollArea.viewportHeight
 	parent: scrollArea
@@ -28,12 +28,12 @@ AlgPopup
 	//rectangle displaying the resource information.
 	MouseArea
 	{
-		parent: resourceInfos.background
+		parent: resourceInfo.background
 		anchors.fill: parent
 		
 		onClicked:
 		{
-			resourceInfos.close()
+			resourceInfo.close()
 		}
 	}
 	
@@ -89,6 +89,7 @@ AlgPopup
 					AlgLabel
 					{
 						text: "Name : "
+						enabled: infoName.text !== ""
 					}
 					
 					AlgLabel
@@ -106,6 +107,7 @@ AlgPopup
 					AlgLabel
 					{
 						text: "Type : "
+						enabled: infoType.text !== ""
 					}
 					
 					AlgLabel
@@ -123,6 +125,7 @@ AlgPopup
 					AlgLabel
 					{
 						text: "Shelf : "
+						enabled: infoShelf.text !== ""
 					}
 					
 					AlgLabel
@@ -140,6 +143,7 @@ AlgPopup
 					AlgLabel
 					{
 						text: "Path : "
+						enabled: infoShelfPath.text !== ""
 					}
 					
 					AlgLabel
@@ -157,6 +161,7 @@ AlgPopup
 					AlgLabel
 					{
 						text: "Category : "
+						enabled: infoCategory.text !== ""
 					}
 					
 					AlgLabel
@@ -174,6 +179,7 @@ AlgPopup
 					AlgLabel
 					{
 						text: "Tags : "
+						enabled: infoTags.text !== ""
 					}
 					
 					AlgLabel
@@ -191,6 +197,7 @@ AlgPopup
 					AlgLabel
 					{
 						text: "Usages : "
+						enabled: infoUsages.text !== ""
 					}
 					
 					AlgLabel
@@ -208,6 +215,7 @@ AlgPopup
 					AlgLabel
 					{
 						text: "Full URL : "
+						enabled: infoUrl.text !== ""
 					}
 					
 					AlgLabel
@@ -223,43 +231,39 @@ AlgPopup
 		}
 	}
 
-	function getInfoAboutResource(url)
-	{
-		try
-		{
-			var resInfos = alg.resources.getResourceInfo(url)
+	function getInfoAboutResource(url) {
+		try {
+			var resInfo = alg.resources.getResourceInfo(url)
 
-			infoName.text = resInfos.name !== undefined ?
-				resInfos.name :
+			infoName.text = resInfo.name !== undefined ?
+				resInfo.name :
 				""
-			infoType.text = resInfos.type !== undefined ?
-				resInfos.type :
+			infoType.text = resInfo.type !== undefined ?
+				resInfo.type :
 				""
-			infoShelf.text = resInfos.shelfName !== undefined ?
-				resInfos.shelfName :
+			infoShelf.text = resInfo.shelfName !== undefined ?
+				resInfo.shelfName :
 				""
-			infoShelfPath.text = resInfos.shelfPath !== undefined ?
-				resInfos.shelfPath :
+			infoShelfPath.text = resInfo.shelfPath !== undefined ?
+				resInfo.shelfPath :
 				""
-			infoCategory.text = resInfos.category !== undefined ?
-				resInfos.category :
+			infoCategory.text = resInfo.category !== undefined ?
+				resInfo.category :
 				""
-			infoTags.text = resInfos.tags !== undefined ?
-				resInfos.tags.toString() :
+			infoTags.text = resInfo.tags !== undefined ?
+				resInfo.tags.toString() :
 				""
-			infoUsages.text = resInfos.usages !== undefined ?
-				resInfos.usages.toString() :
+			infoUsages.text = resInfo.usages !== undefined ?
+				resInfo.usages.toString() :
 				""
 			infoUrl.text = url
 			
 			thumbnail.source = "image://resources/" + url
 			
 			//Display popup
-			resourceInfos.visible = true
-		}
-		catch(err)
-		{
-			alg.log.exception( err )
+			resourceInfo.visible = true
+		} catch(err) {
+			alg.log.exception(err)
 		}
 	}
 }

@@ -31,7 +31,8 @@ Rectangle
 	{
 		id: scrollArea
 		anchors.fill: parent
-		anchors.margins: 1
+		anchors.margins: 4
+		maximumFlickVelocity : 1000
 		contentHeight: content.contentHeight
 		
 		ListView
@@ -46,17 +47,18 @@ Rectangle
 
 			delegate: Rectangle
 			{
+				id: resourceItem
+
+				visible: isResourceVisible(outdated, name)
 				width: scrollArea.viewportWidth
-				height: resourceItem.height
+				height: visible ? Style.widgets.resourceItemHeight : 0
 				
 				radius: Style.radius
 				color: backgroundColor
 				border.color: AlgStyle.background.color.dark //#1E1E1E
-				border.width: Style.borderWidth
 				
 				RowLayout
 				{
-					id: resourceItem
 					anchors.fill: parent
 
 					height: Style.widgets.resourceItemHeight
@@ -69,17 +71,29 @@ Rectangle
 						source: image
 						fillMode: Image.PreserveAspectFit
 						mipmap:true
-						Layout.preferredHeight: resourceItem.height - Style.margin
-						Layout.preferredWidth: resourceItem.height - Style.margin
+						Layout.preferredHeight: resourceItem.height - Style.margin*2
+						Layout.preferredWidth: resourceItem.height - Style.margin*2
 
 						MouseArea {
 							anchors.fill: parent
 							hoverEnabled: true
+							cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
+							
+							Rectangle
+							{
+								anchors.fill: parent
+								visible: parent.containsMouse
+								color: "#FFFFFF"
+								opacity: 0.2
+							}
+
 							onClicked:
 							{
-								resourceInfos.getInfoAboutResource(url)
+								resourceInfo.getInfoAboutResource(url)
 							}
 						}
+
+						
 					}
 					
 					AlgLabel
@@ -111,7 +125,7 @@ Rectangle
 						
 						AlgLabel
 						{
-							text: "Self : "
+							text: "Shelf : "
 							verticalAlignment: Text.AlignVCenter
 						}
 						
@@ -168,9 +182,9 @@ Rectangle
 		}
 	}
 
-	ResourceInfos
+	ResourceInfo
 	{
-		id: resourceInfos
+		id: resourceInfo
 	}
 
 	function updateResource(orignalName, originalURL, newUrl) {
@@ -203,13 +217,13 @@ Rectangle
 	
 	//Try to find a updated resource in the shelf
 	//Return empty if the resource isn't outdate
-	function findResourceUrlOnShelf(resourceInfos) {
-		var regexp = new RegExp(resourceInfos.name , "i")
+	function findResourceUrlOnShelf(resourceInfo) {
+		var regexp = new RegExp(resourceInfo.name , "i")
 		var shelfResources = alg.resources.findResources("*", regexp)
 		for( var i = 0; i < shelfResources.length; i++ ) {
 			var shelfResourceInfo = alg.resources.getResourceInfo(shelfResources[i])
-			if(shelfResourceInfo.name === resourceInfos.name
-				&& shelfResourceInfo.version != resourceInfos.version) {
+			if(shelfResourceInfo.name === resourceInfo.name
+				&& shelfResourceInfo.version != resourceInfo.version) {
 				return shelfResources[i]
 			}
 		}
@@ -232,17 +246,11 @@ Rectangle
 		var displayMode = current_filter === filter_ALL
 			|| (isOutdated && current_filter === filter_OUTDATED)
 			|| (!isOutdated && current_filter === filter_NO_OUTDATED);
-		if (!displayMode) {
-			return false
-		}
+		
+		var regexp = new RegExp(filter_text, "i")
+		var nameMatch = filter_text === "" || resourceName.match(regexp)
 
-		if (filter_text !== "") {
-			var regexp = new RegExp(filter_text, "i")
-			if (resourceName.match(regexp)) {
-				return false
-			}
-		}
-		return true
+		return displayMode && nameMatch
 	}
 
 	// Create the model list to show
@@ -274,9 +282,9 @@ Rectangle
 
 			for( var i = 0; i < documentResources.length; i++ ) {
 				//Get resource infos for the current resource
-				var resourceInfos = alg.resources.getResourceInfo(documentResources[i])
+				var resourceInfo = alg.resources.getResourceInfo(documentResources[i])
 				//Try to find a updated resource in the shelf
-				var shelfResourceUrl = findResourceUrlOnShelf(resourceInfos)
+				var shelfResourceUrl = findResourceUrlOnShelf(resourceInfo)
 
 				var isOutdated = shelfResourceUrl === "" ? false : true
 
@@ -284,16 +292,16 @@ Rectangle
 					++nbOutdatedResources
 				}
 
-				if (!isResourceVisible(isOutdated, resourceInfos.name)) {
+				if (!isResourceVisible(isOutdated, resourceInfo.name)) {
 					continue //Pass to the next resource
 				}
 
-				var query = createQuery(resourceInfos.type)
+				var query = createQuery(resourceInfo.type)
 				var resource = {
-					name            : resourceInfos.name,
-					shelfName       : resourceInfos.shelfName,
+					name            : resourceInfo.name,
+					shelfName       : resourceInfo.shelfName,
 					number          : i + 1,
-					image           : "image://resources/" + resourceInfos.url,
+					image           : "image://resources/" + resourceInfo.url,
 					url             : documentResources[i],
 					newUrl          : "",
 					backgroundColor         : "",

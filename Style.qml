@@ -17,5 +17,5 @@ QtObject {
 
 	readonly property int margin: 8
 	readonly property int borderWidth: 2
-	readonly property int radius: 3
+	readonly property int radius: 4
 }

@@ -15,21 +15,21 @@ Row
 		antialiasing: true
 		width: 30
 		height: 30
+		hoverEnabled: true
 
 		Rectangle
 		{
 			width: parent.width
 			height: parent.height
-			color: "#141414"
+			color: rect.hovered ? "#424242" : "#141414"
 			
 			Image
 			{
-				source: "icon_toolbar.png"
+				source: "icon.svg"
 				fillMode: Image.PreserveAspectFit
 				width: parent.width
 				height: parent.height
 				mipmap: true
-				opacity: 1
 			}
 		}
 		
