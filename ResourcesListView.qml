@@ -32,7 +32,7 @@ Rectangle
 		id: scrollArea
 		anchors.fill: parent
 		anchors.margins: 4
-		maximumFlickVelocity : 1000
+		maximumFlickVelocity : 1500
 		contentHeight: content.contentHeight
 		
 		ListView
