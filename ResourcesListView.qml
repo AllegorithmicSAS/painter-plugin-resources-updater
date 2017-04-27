@@ -32,7 +32,7 @@ Rectangle
 		id: scrollArea
 		anchors.fill: parent
 		anchors.margins: 4
-		maximumFlickVelocity : 1000
+		maximumFlickVelocity : 1500
 		contentHeight: content.contentHeight
 		
 		ListView
@@ -203,6 +203,10 @@ Rectangle
 
 	function updateAllResources() {
 		for(var i = 0; i < resourcesList.count; i++) {
+			if (!resourcesList.get(i).visible) {
+				continue
+			}
+
 			var newUrl 	= resourcesList.get(i).newUrl
 			
 			//Only update resource where the user provided a new asset in the interface
