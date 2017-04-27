@@ -203,6 +203,10 @@ Rectangle
 
 	function updateAllResources() {
 		for(var i = 0; i < resourcesList.count; i++) {
+			if (!resourcesList.get(i).visible) {
+				continue
+			}
+
 			var newUrl 	= resourcesList.get(i).newUrl
 			
 			//Only update resource where the user provided a new asset in the interface
