@@ -243,6 +243,9 @@ AlgWindow
 	
 	function refreshInterface() {
 		try {
+			if (!window.visible) {
+				return
+			}
 			projectName.text = "Project : "
 			
 			resourcesListView.updateResourcesList()

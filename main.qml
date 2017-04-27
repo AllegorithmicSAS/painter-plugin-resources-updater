@@ -11,8 +11,7 @@ PainterPlugin
 	tickIntervalMS: -1 // Disabled, no need for Tick
 	jsonServerPort: -1 // Disabled, no need for JSON server
 
-	property int majorVersionRequired: 2
-	property int minorVersionRequired: 6
+	property var minorVersion: "1.0.5"
 	
 	ResourceUpdaterWindow
 	{
@@ -21,41 +20,27 @@ PainterPlugin
 	
 	Component.onCompleted:
 	{
-		if (isPluginSuported()) {
+		if (minorVersion <= alg.version.api) {
 			var qmlToolbar = alg.ui.addToolBarWidget( "toolbar.qml" )
 			qmlToolbar.windowReference = window
-			refresh()
+			window.refreshInterface()
 		} else {
-			alg.log.warn("Resource Updater Plugin need Substance Painter "+majorVersionRequired+"."+minorVersionRequired+" scripting API or higher")
+			alg.log.warn("Resource Updater Plugin need Substance Painter scripting API "+minorVersion+" or higher")
 		}
 	}
 	
 	onNewProjectCreated:
 	{
-		refresh()
+		window.refreshInterface()
 	}
 
 	onProjectOpened:
 	{
-		refresh()
+		window.refreshInterface()
 	}
 	
 	onProjectAboutToClose:
 	{
-		refresh()
-	}
-
-	function isPluginSuported() {
-		var version = alg.version.painter.split(".")
-		if (version[0] < majorVersionRequired || version[1] < minorVersionRequired) {
-			return false
-		}
-		return true
-	}
-
-	function refresh() {
-		if (isPluginSuported()) {
-			window.refreshInterface()
-		}
+		window.refreshInterface()
 	}
 }
