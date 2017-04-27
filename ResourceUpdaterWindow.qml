@@ -38,17 +38,13 @@ AlgWindow
 			id: titleBar
 			anchors.left: parent.left
 			anchors.right: parent.right
-			height: Style.widgets.barHeight
+			Layout.preferredHeight: Style.widgets.barHeight
 
 			color: AlgStyle.background.color.darkGray //#252525
 
 			RowLayout
 			{
-				anchors {
-					left: parent.left
-					right: parent.right
-					verticalCenter: parent.verticalCenter;
-				}
+				anchors.fill: parent
 				
 				AlgLabel
 				{
@@ -90,7 +86,7 @@ AlgWindow
 			id: filteringBar
 			anchors.left: parent.left
 			anchors.right: parent.right
-			height: Style.widgets.barHeight
+			Layout.preferredHeight: Style.widgets.barHeight
 			
 			color: AlgStyle.background.color.normal //#323232
 			
@@ -189,17 +185,14 @@ AlgWindow
 		{
 			anchors.left: parent.left
 			anchors.right: parent.right
-			height: Style.widgets.barHeight
+			Layout.preferredHeight: Style.widgets.barHeight
 			Layout.bottomMargin: Style.margin
 			
 			color: AlgStyle.background.color.normal //#323232
 			
 			RowLayout
 			{
-				width: parent.width
-				anchors {
-					verticalCenter: parent.verticalCenter;
-				}
+				anchors.fill: parent
 				
 				AlgButton
 				{
