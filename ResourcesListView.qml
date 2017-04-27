@@ -206,9 +206,10 @@ Rectangle
 
 	function updateAllResources() {
 		try {
-			for(var i = 0; i < resourcesList.count; i++) {
-				content.currentIndex = resourcesList.get(i).number - 1
+			content.currentIndex = 0
+			for(var i = 0; i < content.count; i++) {
 				content.currentItem.updateResource()
+				content.incrementCurrentIndex()
 			}
 		} catch(err) {
 			alg.log.warn(err.message)
