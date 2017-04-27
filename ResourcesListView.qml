@@ -47,8 +47,6 @@ Rectangle
 
 			delegate: Rectangle
 			{
-				id: resourceItem
-
 				visible: isResourceVisible(outdated, name)
 				width: scrollArea.viewportWidth
 				height: visible ? Style.widgets.resourceItemHeight : 0
@@ -68,7 +66,7 @@ Rectangle
 					
 					Image
 					{
-						source: image
+						source: "image://resources/" + url
 						fillMode: Image.PreserveAspectFit
 						mipmap:true
 						anchors.top: parent.top
@@ -173,13 +171,29 @@ Rectangle
 
 							onClicked:
 							{
-								if (updateResource(name, url, resourcePicker.url)) {
-									updateResourcesList()
-								}
+								updateResource()
 							}
 						}
 					}
 				}
+
+				function updateResource() {
+					try {
+						if (!visible || newUrl === "") {
+							return false
+						}
+						if(alg.resources.updateDocumentResources(url, newUrl)) {
+							alg.log.info("Resource \"" + name + "\" has been updated")
+							url = newUrl
+							resourcePicker.requestUrl("")
+							return true
+						}
+						return false
+					} catch(err) {
+						alg.log.exception(err)
+					}
+				}
+
 			}
 		}
 	}
@@ -189,32 +203,16 @@ Rectangle
 		id: resourceInfo
 	}
 
-	function updateResource(orignalName, originalURL, newUrl) {
-		try {
-			if(alg.resources.updateDocumentResources(originalURL, newUrl)) {
-				alg.log.info("Resource \"" + orignalName + "\" has been updated")
-				return true
-			}
-			return false
-		} catch(err) {
-			alg.log.exception(err)
-		}
-	}
 
 	function updateAllResources() {
-		for(var i = 0; i < resourcesList.count; i++) {
-			var newUrl 	= resourcesList.get(i).newUrl
-			
-			//Only update resource where the user provided a new asset in the interface
-			if(newUrl !== "") {
-				updateResource(
-					resourcesList.get(i).name,
-					resourcesList.get(i).url,
-					newUrl)
+		try {
+			for(var i = 0; i < resourcesList.count; i++) {
+				content.currentIndex = resourcesList.get(i).number - 1
+				content.currentItem.updateResource()
 			}
+		} catch(err) {
+			alg.log.warn(err.message)
 		}
-		
-		updateResourcesList()
 	}
 	
 	//Try to find a updated resource in the shelf
@@ -302,10 +300,9 @@ Rectangle
 					name            : resourceInfo.name,
 					shelfName       : resourceInfo.shelfName,
 					number          : i + 1,
-					image           : "image://resources/" + resourceInfo.url,
-					url             : documentResources[i],
+					url             : resourceInfo.url,
 					newUrl          : "",
-					backgroundColor         : "",
+					backgroundColor : "",
 					queryFilter     : query,
 					outdated        : isOutdated
 				}
@@ -326,10 +323,10 @@ Rectangle
 			//---------------------------------------
 			// Update UI
 			//---------------------------------------
-			projectName.text 			= "Project : " + alg.project.name()
+			projectName.text = "Project : " + alg.project.name()
 			infoResourcesCount.text = "(" +  documentResources.length + " resources, " + nbOutdatedResources.toString() + " outdated)"
 		} catch(err) {
-			alg.log.warn( err.message )
+			alg.log.warn(err.message)
 		}
 	}
 

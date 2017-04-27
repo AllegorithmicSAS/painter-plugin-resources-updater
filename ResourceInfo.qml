@@ -58,7 +58,6 @@ AlgPopup
 		{
 			id: content
 			anchors {
-				verticalCenter: parent.verticalCenter;
 				left: parent.left
 				right: parent.right
 			}
@@ -73,9 +72,10 @@ AlgPopup
 					source: ""
 					fillMode: Image.PreserveAspectFit
 					mipmap: true
-					anchors.top: parent.top
-					anchors.bottom: parent.bottom
-					Layout.preferredWidth: height
+					Layout.preferredWidth: infosList.height
+					Layout.preferredHeight: infosList.height
+					sourceSize.width: 512
+					sourceSize.height: 512
 				}
 				
 				GridLayout
