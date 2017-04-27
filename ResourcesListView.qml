@@ -233,13 +233,16 @@ Rectangle
 	}
 
 	//Create a query for the picker resource
-	function createQuery(resourceType) {
-		if( resourceType === "image" ) {
-			return "image"
-		} else if( resourceType === "pkfx" ) {
-			return "emitter;receiver"
+	function createQuery(resourceType, resourceUsages) {
+		if(resourceType === "image") {
+			return resourceType
+		} else if(resourceType === "pkfx" || resourceType === "script") {
+			return resourceUsages
 		} else { //substance
-			return "substance"
+			if (resourceUsages === undefined || resourceUsages.length > 1) {
+				return "substance"
+			}
+			return "substance " + resourceUsages[0]
 		}
 	}
 
@@ -262,7 +265,7 @@ Rectangle
 				alg.log.info("No project open, resources updater discarded")
 				return
 			}
-				
+
 			//Get all document resources
 			var documentResources = alg.resources.documentResources()
 			//Sort them by name
@@ -294,11 +297,7 @@ Rectangle
 					++nbOutdatedResources
 				}
 
-				if (!isResourceVisible(isOutdated, resourceInfo.name)) {
-					continue //Pass to the next resource
-				}
-
-				var query = createQuery(resourceInfo.type)
+				var query = createQuery(resourceInfo.type, resourceInfo.usages)
 				var resource = {
 					name            : resourceInfo.name,
 					shelfName       : resourceInfo.shelfName,
