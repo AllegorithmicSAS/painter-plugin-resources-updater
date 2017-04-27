@@ -10,6 +10,8 @@ PainterPlugin
 {
 	tickIntervalMS: -1 // Disabled, no need for Tick
 	jsonServerPort: -1 // Disabled, no need for JSON server
+
+	property var minorVersion: "1.0.5"
 	
 	ResourceUpdaterWindow
 	{
@@ -18,10 +20,12 @@ PainterPlugin
 	
 	Component.onCompleted:
 	{
-		var qmlToolbar = alg.ui.addToolBarWidget( "toolbar.qml" )
-		qmlToolbar.windowReference = window
-		
-		window.refreshInterface()
+		if (minorVersion <= alg.version.api) {
+			var qmlToolbar = alg.ui.addToolBarWidget( "toolbar.qml" )
+			qmlToolbar.windowReference = window
+		} else {
+			alg.log.warn("Resource Updater Plugin need Substance Painter scripting API "+minorVersion+" or higher")
+		}
 	}
 	
 	onNewProjectCreated:
