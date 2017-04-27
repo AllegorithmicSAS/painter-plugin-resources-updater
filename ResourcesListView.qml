@@ -57,9 +57,9 @@ Rectangle
 				
 				RowLayout
 				{
-					anchors.fill: parent
-
-					height: Style.widgets.resourceItemHeight
+					anchors.left: parent.left
+					anchors.right: parent.right
+					height: parent.height
 
 					anchors.leftMargin: Style.margin
 					anchors.rightMargin: Style.margin
