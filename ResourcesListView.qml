@@ -57,9 +57,7 @@ Rectangle
 				
 				RowLayout
 				{
-					anchors.left: parent.left
-					anchors.right: parent.right
-					height: parent.height
+					anchors.fill: parent
 
 					anchors.leftMargin: Style.margin
 					anchors.rightMargin: Style.margin
@@ -69,10 +67,10 @@ Rectangle
 						source: "image://resources/" + url
 						fillMode: Image.PreserveAspectFit
 						mipmap:true
-						anchors.top: parent.top
-						anchors.bottom: parent.bottom
-						anchors.margins: Style.margin
-						Layout.preferredWidth: height
+						Layout.preferredWidth: Style.widgets.resourceItemHeight - Style.margin*2
+						Layout.preferredHeight: Style.widgets.resourceItemHeight - Style.margin*2
+						sourceSize.width: 512
+						sourceSize.height: 512
 
 						MouseArea {
 							anchors.fill: parent
