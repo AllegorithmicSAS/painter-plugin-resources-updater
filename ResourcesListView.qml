@@ -59,8 +59,6 @@ Rectangle
 				{
 					anchors.fill: parent
 
-					height: Style.widgets.resourceItemHeight
-
 					anchors.leftMargin: Style.margin
 					anchors.rightMargin: Style.margin
 					
@@ -69,10 +67,10 @@ Rectangle
 						source: "image://resources/" + url
 						fillMode: Image.PreserveAspectFit
 						mipmap:true
-						anchors.top: parent.top
-						anchors.bottom: parent.bottom
-						anchors.margins: Style.margin
-						Layout.preferredWidth: height
+						Layout.preferredWidth: Style.widgets.resourceItemHeight - Style.margin*2
+						Layout.preferredHeight: Style.widgets.resourceItemHeight - Style.margin*2
+						sourceSize.width: 512
+						sourceSize.height: 512
 
 						MouseArea {
 							anchors.fill: parent
@@ -239,14 +237,14 @@ Rectangle
 	//Create a query for the picker resource
 	function createQuery(resourceType, resourceUsages) {
 		if(resourceType === "image") {
-			return resourceType
+			return "u:" + resourceType
 		} else if(resourceType === "pkfx" || resourceType === "script") {
-			return resourceUsages
+			return "u:" + resourceUsages
 		} else { //substance
 			if (resourceUsages === undefined || resourceUsages.length > 1) {
-				return "substance"
+				return "u:substance"
 			}
-			return "substance " + resourceUsages[0]
+			return "u:substance " + resourceUsages[0]
 		}
 	}
 
