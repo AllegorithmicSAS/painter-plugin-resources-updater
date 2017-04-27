@@ -52,7 +52,7 @@ Rectangle
 				height: visible ? Style.widgets.resourceItemHeight : 0
 				
 				radius: Style.radius
-				color: backgroundColor
+				color: outdated ? "#662222" : AlgStyle.background.color.normal
 				border.color: AlgStyle.background.color.dark //#1E1E1E
 				
 				RowLayout
@@ -186,6 +186,11 @@ Rectangle
 							alg.log.info("Resource \"" + name + "\" has been updated")
 							url = newUrl
 							resourcePicker.requestUrl("")
+							outdated = false
+							var resInfo = alg.resources.getResourceInfo(url)
+							name = resInfo.name
+							shelfName = resInfo.shelfName
+							queryFilter = resourcesListView.createQuery(resInfo.type, resInfo.usages)
 							return true
 						}
 						return false
@@ -303,17 +308,13 @@ Rectangle
 					number          : i + 1,
 					url             : resourceInfo.url,
 					newUrl          : "",
-					backgroundColor : "",
 					queryFilter     : query,
 					outdated        : isOutdated
 				}
 
 				if (isOutdated) {
 					// Add the outdated resource in the list
-					resource.backgroundColor = "#662222"
 					resource.newUrl = shelfResourceUrl
-				} else {
-					resource.backgroundColor = (AlgStyle.background.color.normal).toString()
 				}
 
 				//Add the resource to the list
