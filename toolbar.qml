@@ -24,10 +24,10 @@ Row
 			
 			Image
 			{
+				anchors.fill: parent
+				anchors.margins: 3
 				source: "icon.svg"
 				fillMode: Image.PreserveAspectFit
-				anchors.centerIn: parent
-				anchors.margins: 4
 				sourceSize.width: width
 				sourceSize.height: height
 				mipmap: true
