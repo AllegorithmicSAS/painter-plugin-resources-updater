@@ -8,7 +8,6 @@ import AlgWidgets.Style 1.0
 Row
 {
 	property var windowReference : null
-	property int iconMargins : 4
 
 	Button
 	{
@@ -28,9 +27,7 @@ Row
 				source: "icon.svg"
 				fillMode: Image.PreserveAspectFit
 				anchors.centerIn: parent
-				
-				width: parent.width - iconMargins
-				height: parent.height - iconMargins
+				anchors.margins: 4
 				sourceSize.width: width
 				sourceSize.height: height
 				mipmap: true
