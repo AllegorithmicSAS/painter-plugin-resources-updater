@@ -1,52 +1,50 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.2
 import QtQuick.Window 2.2
-import QtQuick.Layouts 1.2
+import QtQuick.Layouts 1.3
 import AlgWidgets 1.0
 import AlgWidgets.Style 1.0
 
-Row
+Button
 {
+	id: rect
+	antialiasing: true
+	width: 32
+	height: 32
+	hoverEnabled: true
+
 	property var windowReference : null
 
-	Button
-	{
-		id: rect
-		antialiasing: true
-		width: 30
-		height: 30
-		hoverEnabled: true
+	background: Rectangle {
+		anchors.fill: rect
+	    color: rect.hovered ?
+	      "#262626" :
+	      "transparent"
+	}
 
-		Rectangle
+	Image
+	{
+		anchors.fill: parent
+		anchors.margins: 8
+		source: "ressources_updater.svg"
+		fillMode: Image.PreserveAspectFit
+		sourceSize.width: width
+		sourceSize.height: height
+		mipmap: true
+	}
+	
+	onClicked:
+	{
+		try
 		{
-			anchors.fill: parent
-			color: rect.hovered ? "#424242" : "#141414"
-			
-			Image
-			{
-				anchors.fill: parent
-				anchors.margins: 3
-				source: "icon.svg"
-				fillMode: Image.PreserveAspectFit
-				sourceSize.width: width
-				sourceSize.height: height
-				mipmap: true
-			}
+			windowReference.visible = true
+			windowReference.refreshInterface()
+			windowReference.raise()
+			windowReference.requestActivate()
 		}
-		
-		onClicked:
+		catch(err)
 		{
-			try
-			{
-				windowReference.visible = true
-				windowReference.refreshInterface()
-				windowReference.raise()
-				windowReference.requestActivate()
-			}
-			catch(err)
-			{
-				alg.log.exception(err)
-			}
+			alg.log.exception(err)
 		}
 	}
 }

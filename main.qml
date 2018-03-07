@@ -18,7 +18,7 @@ PainterPlugin
 	
 	Component.onCompleted:
 	{
-		var qmlToolbar = alg.ui.addToolBarWidget( "toolbar.qml" )
+		var qmlToolbar = alg.ui.addWidgetToPluginToolBar( "toolbar.qml" )
 		qmlToolbar.windowReference = window
 	}
 	
