@@ -1,9 +1,7 @@
-import QtQuick 2.7
-import QtQuick.Controls 2.2
-import QtQuick.Window 2.2
-import QtQuick.Layouts 1.3
-import AlgWidgets 1.0
 import AlgWidgets.Style 1.0
+import QtQuick 2.7
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 
 Button
 {
@@ -11,16 +9,19 @@ Button
 	antialiasing: true
 	width: 32
 	height: 32
-	hoverEnabled: true
+	tooltip: "Resources updater"
+
+	style: ButtonStyle {
+		background: Rectangle {
+			implicitWidth: rect.width
+			implicitHeight: rect.height
+			color: rect.hovered ?
+				"#262626" :
+				"transparent"
+		}
+	}
 
 	property var windowReference : null
-
-	background: Rectangle {
-		anchors.fill: rect
-	    color: rect.hovered ?
-	      "#262626" :
-	      "transparent"
-	}
 
 	Image
 	{
