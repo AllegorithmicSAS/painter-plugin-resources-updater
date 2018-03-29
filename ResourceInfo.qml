@@ -6,8 +6,8 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
-import AlgWidgets 1.0
-import AlgWidgets.Style 1.0
+import AlgWidgets 2.0
+import AlgWidgets.Style 2.0
 import "."
 
 AlgPopup
@@ -20,7 +20,7 @@ AlgPopup
 	
 	Component.onCompleted:
 	{
-		background.color = AlgStyle.background.color.dark //#1E1E1E
+		background.color = AlgStyle.colors.gray(15)
 		background.opacity = 0.8
 	}
 	
@@ -43,11 +43,11 @@ AlgPopup
 		width: parent.width * 0.8
 		height: content.height
 		
-		border.color: AlgStyle.background.color.light //#494949
+		border.color: AlgStyle.colors.gray(30)
 		border.width: Style.borderWidth
 		radius: Style.radius
 
-		color: AlgStyle.background.color.gray //#3C3C3C
+		color: AlgStyle.colors.gray(25)
 
 		MouseArea
 		{

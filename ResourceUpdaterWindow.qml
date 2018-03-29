@@ -6,8 +6,8 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
-import AlgWidgets 1.0
-import AlgWidgets.Style 1.0
+import AlgWidgets 2.0
+import AlgWidgets.Style 2.0
 import "."
 
 AlgWindow
@@ -40,7 +40,7 @@ AlgWindow
 			anchors.right: parent.right
 			Layout.preferredHeight: Style.widgets.barHeight
 
-			color: AlgStyle.background.color.darkGray //#252525
+			color: AlgStyle.colors.gray(10)
 
 			RowLayout
 			{
@@ -88,7 +88,7 @@ AlgWindow
 			anchors.right: parent.right
 			Layout.preferredHeight: Style.widgets.barHeight
 			
-			color: AlgStyle.background.color.normal //#323232
+			color: AlgStyle.background.color.mainWindow
 			
 			RowLayout
 			{
@@ -188,7 +188,7 @@ AlgWindow
 			Layout.preferredHeight: Style.widgets.barHeight
 			Layout.bottomMargin: Style.margin
 			
-			color: AlgStyle.background.color.normal //#323232
+			color: AlgStyle.background.color.mainWindow
 			
 			RowLayout
 			{
