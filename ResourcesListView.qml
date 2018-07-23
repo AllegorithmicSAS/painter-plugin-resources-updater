@@ -6,8 +6,8 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
-import AlgWidgets 1.0
-import AlgWidgets.Style 1.0
+import AlgWidgets 2.0
+import AlgWidgets.Style 2.0
 import "."
 
 Rectangle
@@ -18,7 +18,7 @@ Rectangle
 	Layout.leftMargin: 4
 	Layout.rightMargin: 4
 
-	color: AlgStyle.background.color.darkGray //#252525
+	color: AlgStyle.colors.gray(10)
 
 	property int filter_ALL: 0
 	property int filter_OUTDATED: 1
@@ -52,8 +52,8 @@ Rectangle
 				height: visible ? Style.widgets.resourceItemHeight : 0
 				
 				radius: Style.radius
-				color: outdated ? "#662222" : AlgStyle.background.color.normal
-				border.color: AlgStyle.background.color.dark //#1E1E1E
+				color: outdated ? "#662222" : AlgStyle.background.color.mainWindow
+				border.color: AlgStyle.colors.gray(15)
 				
 				RowLayout
 				{
@@ -335,7 +335,7 @@ Rectangle
 	}
 	
 	function scrollResourcesListToBottom() {
-		scrollArea.contentY = scrollArea.contentHeight
+		scrollArea.contentY = scrollArea.contentHeight - scrollArea.viewportHeight
 	}
 
 }

@@ -1,39 +1,13 @@
-import AlgWidgets.Style 1.0
-import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import AlgWidgets 2.0
+import AlgWidgets.Style 2.0
 
-Button
+AlgToolBarButton
 {
-	id: rect
-	antialiasing: true
-	width: 32
-	height: 32
+	iconName: "ressources_updater.svg"
 	tooltip: "Resources updater"
-
-	style: ButtonStyle {
-		background: Rectangle {
-			implicitWidth: rect.width
-			implicitHeight: rect.height
-			color: rect.hovered ?
-				"#262626" :
-				"transparent"
-		}
-	}
 
 	property var windowReference : null
 
-	Image
-	{
-		anchors.fill: parent
-		anchors.margins: 8
-		source: "ressources_updater.svg"
-		fillMode: Image.PreserveAspectFit
-		sourceSize.width: width
-		sourceSize.height: height
-		mipmap: true
-	}
-	
 	onClicked:
 	{
 		try
