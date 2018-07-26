@@ -32,6 +32,7 @@ AlgWindow
 	{
 		id: horizontalLayout
 		anchors.fill: parent
+		spacing: 0
 
 		Rectangle
 		{
@@ -80,6 +81,25 @@ AlgWindow
 			}
 		}
 		
+		AlgTabBar
+		{
+			id: tabBar
+			anchors.left: parent.left
+			anchors.right: parent.right
+			Layout.preferredHeight: switchToResources.height
+
+			AlgTabButton
+			{
+				id: switchToResources
+				text: "Resources"
+			}
+
+			AlgTabButton
+			{
+				id: switchToShaders
+				text: "Shaders"
+			}
+		}
 		
 		Rectangle
 		{
@@ -179,6 +199,7 @@ AlgWindow
 		ResourcesListView
 		{
 			id: resourcesListView
+			currentMode: tabBar.currentIndex
 		}
 		
 		Rectangle
@@ -187,6 +208,7 @@ AlgWindow
 			anchors.right: parent.right
 			Layout.preferredHeight: Style.widgets.barHeight
 			Layout.bottomMargin: Style.margin
+			Layout.topMargin: Style.margin
 			
 			color: AlgStyle.background.color.mainWindow
 			

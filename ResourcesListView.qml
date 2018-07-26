@@ -20,10 +20,18 @@ Rectangle
 
 	color: AlgStyle.colors.gray(10)
 
-	property int filter_ALL: 0
-	property int filter_OUTDATED: 1
-	property int filter_NO_OUTDATED: 2
+	readonly property int filter_ALL: 0
+	readonly property int filter_OUTDATED: 1
+	readonly property int filter_NO_OUTDATED: 2
 	property var current_filter: filter_ALL
+
+	readonly property int mode_RESOURCES: 0
+	readonly property int mode_SHADERS: 1
+	property var currentMode: mode_RESOURCES
+
+	onCurrentModeChanged: {
+		updateResourcesList()
+	}
 
 	property string filter_text: ""
 
@@ -146,6 +154,25 @@ Rectangle
 							defaultLabel: "Select new resource"
 							Layout.preferredWidth: Style.widgets.buttonWidth*2
 							Layout.preferredHeight: 40
+							filters: 
+								currentMode == mode_RESOURCES ?
+									AlgResourcePicker.EMITTER         |
+									AlgResourcePicker.ENVIRONMENT     |
+									AlgResourcePicker.LUT             |
+									AlgResourcePicker.FILTER          |
+									AlgResourcePicker.GENERATOR       |
+									AlgResourcePicker.MASK            |
+									AlgResourcePicker.MATERIAL        |
+									AlgResourcePicker.PRESET_BRUSH    |
+									AlgResourcePicker.PRESET_LAYERS   |
+									AlgResourcePicker.PRESET_MASK     |
+									AlgResourcePicker.PRESET_MATERIAL |
+									AlgResourcePicker.PRESET_PARTICLE |
+									AlgResourcePicker.PRESET_TOOL     |
+									AlgResourcePicker.PROCEDURAL      |
+									AlgResourcePicker.RECEIVER        |
+									AlgResourcePicker.TEXTURE         :
+									AlgResourcePicker.SHADER
 							
 							Component.onCompleted:
 							{
@@ -180,7 +207,18 @@ Rectangle
 						if (!visible || newUrl === "") {
 							return false
 						}
-						if(alg.resources.updateDocumentResources(url, newUrl)) {
+						var updateSuccessful = (currentMode == mode_RESOURCES && alg.resources.updateDocumentResources(url, newUrl))
+						if (!updateSuccessful && currentMode == mode_SHADERS) {
+							try {
+								alg.shaders.updateShaderInstance(id, newUrl)
+								updateSuccessful = true;
+							}
+							catch(err) {
+								alg.log.exception(err)
+							}
+						}
+						if (updateSuccessful) 
+						{
 							alg.log.info("Resource \"" + name + "\" has been updated")
 							url = newUrl
 							resourcePicker.requestUrl("")
@@ -191,10 +229,10 @@ Rectangle
 							queryFilter = resourcesListView.createQuery(resInfo.type, resInfo.usages)
 							return true
 						}
-						return false
 					} catch(err) {
 						alg.log.exception(err)
 					}
+					return false
 				}
 
 			}
@@ -236,6 +274,7 @@ Rectangle
 
 	//Create a query for the picker resource
 	function createQuery(resourceType, resourceUsages) {
+		if (currentMode == mode_SHADERS) return ""
 		if(resourceType === "image") {
 			return "u:" + resourceType
 		} else if(resourceType === "pkfx" || resourceType === "script") {
@@ -260,6 +299,22 @@ Rectangle
 		return displayMode && nameMatch
 	}
 
+	// Create a resource item for the model
+	function createResourceItem(resourceInfo, index, isOutdated, id) {
+		var query = createQuery(resourceInfo.type, resourceInfo.usages)
+		var resource = {
+			name            : resourceInfo.name,
+			shelfName       : resourceInfo.shelfName,
+			number          : index,
+			id              : id,
+			url             : resourceInfo.url,
+			newUrl          : "",
+			queryFilter     : query,
+			outdated        : isOutdated
+		}
+		return resource;
+	}
+
 	// Create the model list to show
 	function updateResourcesList() {
 		try {
@@ -268,28 +323,42 @@ Rectangle
 				return
 			}
 
-			//Get all document resources
-			var documentResources = alg.resources.documentResources()
-			//Sort them by name
-			documentResources.sort(function(urlA, urlB) {
-				// A url use this format : resource://shelf/name?version=xxxxxx
-				// the third splited value is the name
-				var nameA = urlA.split("/")[3]
-				var nameB = urlB.split("/")[3]
-				if (nameA.toUpperCase() <= nameB.toUpperCase()) {
-					return -1;
-				}
-				return 1;
-			});
-
 			//Reset UI list before adding the resources found
 			resourcesList.clear()
-
 			var nbOutdatedResources = 0
 
-			for( var i = 0; i < documentResources.length; i++ ) {
+			var resourceUrls = []
+
+			if (currentMode == mode_RESOURCES) {
+				//Get all document resources
+				var documentResources = alg.resources.documentResources()
+
+				//Sort them by name
+				documentResources.sort(function(urlA, urlB) {
+					// A url use this format : resource://shelf/name?version=xxxxxx
+					// the third splited value is the name
+					var nameA = urlA.split("/")[3]
+					var nameB = urlB.split("/")[3]
+					if (nameA.toUpperCase() <= nameB.toUpperCase()) {
+						return -1;
+					}
+					return 1;
+				});
+				for ( var i = 0; i < documentResources.length; i++ ) {
+					resourceUrls.push({ url: documentResources[i], id: i })
+				}
+			}
+			else {
+				// Get all shaders
+				var documentShaders = alg.shaders.instances()
+				for ( var i = 0; i < documentShaders.length; i++ ) {
+					resourceUrls.push({ url: documentShaders[i].url, id: documentShaders[i].id })
+				}
+			}
+
+			for( var i = 0; i < resourceUrls.length; i++ ) {
 				//Get resource infos for the current resource
-				var resourceInfo = alg.resources.getResourceInfo(documentResources[i])
+				var resourceInfo = alg.resources.getResourceInfo(resourceUrls[i].url)
 				//Try to find a updated resource in the shelf
 				var shelfResourceUrl = findResourceUrlOnShelf(resourceInfo)
 
@@ -299,16 +368,7 @@ Rectangle
 					++nbOutdatedResources
 				}
 
-				var query = createQuery(resourceInfo.type, resourceInfo.usages)
-				var resource = {
-					name            : resourceInfo.name,
-					shelfName       : resourceInfo.shelfName,
-					number          : i + 1,
-					url             : resourceInfo.url,
-					newUrl          : "",
-					queryFilter     : query,
-					outdated        : isOutdated
-				}
+				var resource = createResourceItem(resourceInfo, i + 1, isOutdated, resourceUrls[i].id);
 
 				if (isOutdated) {
 					// Add the outdated resource in the list
@@ -319,12 +379,11 @@ Rectangle
 				resourcesList.append(resource)
 			}
 
-			
 			//---------------------------------------
 			// Update UI
 			//---------------------------------------
 			projectName.text = "Project : " + alg.project.name()
-			infoResourcesCount.text = "(" +  documentResources.length + " resources, " + nbOutdatedResources.toString() + " outdated)"
+			infoResourcesCount.text = "(" +  resourcesList.count + " resources, " + nbOutdatedResources.toString() + " outdated)"
 		} catch(err) {
 			alg.log.warn(err.message)
 		}
