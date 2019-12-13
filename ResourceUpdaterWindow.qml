@@ -37,8 +37,7 @@ AlgWindow
 		Rectangle
 		{
 			id: titleBar
-			anchors.left: parent.left
-			anchors.right: parent.right
+			Layout.fillWidth: true
 			Layout.preferredHeight: Style.widgets.barHeight
 
 			color: AlgStyle.colors.gray(10)
@@ -84,8 +83,7 @@ AlgWindow
 		AlgTabBar
 		{
 			id: tabBar
-			anchors.left: parent.left
-			anchors.right: parent.right
+			Layout.fillWidth: true
 			Layout.preferredHeight: switchToResources.height
 
 			AlgTabButton
@@ -104,8 +102,7 @@ AlgWindow
 		Rectangle
 		{
 			id: filteringBar
-			anchors.left: parent.left
-			anchors.right: parent.right
+			Layout.fillWidth: true
 			Layout.preferredHeight: Style.widgets.barHeight
 			
 			color: AlgStyle.background.color.mainWindow
@@ -204,8 +201,7 @@ AlgWindow
 		
 		Rectangle
 		{
-			anchors.left: parent.left
-			anchors.right: parent.right
+			Layout.fillWidth: true
 			Layout.preferredHeight: Style.widgets.barHeight
 			Layout.bottomMargin: Style.margin
 			Layout.topMargin: Style.margin
