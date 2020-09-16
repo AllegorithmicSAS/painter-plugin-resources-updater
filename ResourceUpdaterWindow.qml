@@ -13,7 +13,7 @@ import "."
 AlgWindow
 {
 	id: window
-	title: "Substance Painter - Resources Updater"
+	title: qsTr("Substance Painter - Resources Updater")
 	visible: false
 	width: Style.window.width
 	height: Style.window.height
@@ -53,13 +53,13 @@ AlgWindow
 					font.bold: true
 					Layout.leftMargin: Style.margin
 					
-					text: "Project : "
+					text: qsTr("Project : ")
 				}
 
 				AlgButton
 				{
 					property bool pinState: false
-					text: pinState ? "Unpin window" : "Pin window"
+					text: pinState ? qsTr("Unpin window") : qsTr("Pin window")
 					Layout.alignment: Qt.AlignRight
 					Layout.rightMargin: Style.margin
 					Layout.preferredWidth: Style.widgets.buttonWidth
@@ -89,13 +89,13 @@ AlgWindow
 			AlgTabButton
 			{
 				id: switchToResources
-				text: "Resources"
+				text: qsTr("Resources")
 			}
 
 			AlgTabButton
 			{
 				id: switchToShaders
-				text: "Shaders"
+				text: qsTr("Shaders")
 			}
 		}
 		
@@ -117,7 +117,7 @@ AlgWindow
 				AlgLabel
 				{
 					Layout.leftMargin: Style.margin
-					text: "Status : "
+					text: qsTr("Status : ")
 				}
 				
 				AlgComboBox
@@ -137,7 +137,7 @@ AlgWindow
 				AlgLabel
 				{
 					Layout.leftMargin: Style.margin
-					text: "Name filter : "
+					text: qsTr("Name filter : ")
 				}
 				
 				AlgTextInput
@@ -170,7 +170,7 @@ AlgWindow
 				
 				AlgButton
 				{
-					text: "Top"
+					text: qsTr("Top")
 					Layout.preferredWidth: Style.widgets.buttonWidth/2
 					
 					onClicked:
@@ -181,7 +181,7 @@ AlgWindow
 				
 				AlgButton
 				{
-					text: "Bottom"
+					text: qsTr("Bottom")
 					Layout.preferredWidth: Style.widgets.buttonWidth/2
 					Layout.rightMargin: Style.margin
 					
@@ -214,7 +214,7 @@ AlgWindow
 				
 				AlgButton
 				{
-					text: "Refresh"
+					text: qsTr("Refresh")
 					Layout.leftMargin: Style.margin
 					Layout.preferredHeight: 30
 					
@@ -235,7 +235,7 @@ AlgWindow
 				
 				AlgButton
 				{
-					text: "Update All"
+					text: qsTr("Update All")
 					Layout.preferredHeight: 30
 					Layout.rightMargin: Style.margin
 					
@@ -264,7 +264,7 @@ AlgWindow
 			if (!window.visible) {
 				return
 			}
-			projectName.text = "Project : "
+			projectName.text = qsTr("Project : ")
 			
 			resourcesListView.updateResourcesList()
 			resourcesListView.scrollResourcesListToTop()

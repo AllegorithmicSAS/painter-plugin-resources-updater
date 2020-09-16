@@ -4,7 +4,7 @@ import AlgWidgets.Style 2.0
 AlgToolBarButton
 {
 	iconName: "ressources_updater.svg"
-	tooltip: "Resources updater"
+	tooltip: qsTr("Resources updater")
 
 	property var windowReference : null
 
