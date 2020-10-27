@@ -191,7 +191,7 @@ Rectangle
 						AlgButton
 						{
 							Layout.preferredWidth: Style.widgets.buttonWidth*2
-							text: "Update"
+							text: qsTr("Update")
 							enabled: resourcePicker.url !== ""
 
 							onClicked:
@@ -382,7 +382,7 @@ Rectangle
 			//---------------------------------------
 			// Update UI
 			//---------------------------------------
-			projectName.text = "Project : " + alg.project.name()
+			projectName.text = qsTr("Project : ") + alg.project.name()
 			infoResourcesCount.text = "(" +  resourcesList.count + " resources, " + nbOutdatedResources.toString() + " outdated)"
 		} catch(err) {
 			alg.log.warn(err.message)
