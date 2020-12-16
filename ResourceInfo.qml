@@ -88,7 +88,7 @@ AlgPopup
 					//---------------------------------
 					AlgLabel
 					{
-						text: "Name : "
+						text: qsTr("Name : ")
 						enabled: infoName.text !== ""
 					}
 					
@@ -106,7 +106,7 @@ AlgPopup
 					//---------------------------------
 					AlgLabel
 					{
-						text: "Type : "
+						text: qsTr("Type : ")
 						enabled: infoType.text !== ""
 					}
 					
@@ -124,7 +124,7 @@ AlgPopup
 					//---------------------------------
 					AlgLabel
 					{
-						text: "Shelf : "
+						text: qsTr("Shelf : ")
 						enabled: infoShelf.text !== ""
 					}
 					
@@ -142,7 +142,7 @@ AlgPopup
 					//---------------------------------
 					AlgLabel
 					{
-						text: "Path : "
+						text: qsTr("Path : ")
 						enabled: infoShelfPath.text !== ""
 					}
 					
@@ -160,7 +160,7 @@ AlgPopup
 					//---------------------------------
 					AlgLabel
 					{
-						text: "Category : "
+						text: qsTr("Category : ")
 						enabled: infoCategory.text !== ""
 					}
 					
@@ -178,7 +178,7 @@ AlgPopup
 					//---------------------------------
 					AlgLabel
 					{
-						text: "Tags : "
+						text: qsTr("Tags : ")
 						enabled: infoTags.text !== ""
 					}
 					
@@ -196,7 +196,7 @@ AlgPopup
 					//---------------------------------
 					AlgLabel
 					{
-						text: "Usages : "
+						text: qsTr("Usages : ")
 						enabled: infoUsages.text !== ""
 					}
 					
@@ -214,7 +214,7 @@ AlgPopup
 					//---------------------------------
 					AlgLabel
 					{
-						text: "Full URL : "
+						text: qsTr("Full URL : ")
 						enabled: infoUrl.text !== ""
 					}
 					
