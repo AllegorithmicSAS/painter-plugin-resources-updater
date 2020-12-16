@@ -126,7 +126,7 @@ AlgWindow
 					Layout.preferredWidth: Style.widgets.buttonWidth
 					Layout.preferredHeight: textFilter.height
 
-					model: ["All", "Outdated", "Non-Outdated"]
+					model: [qsTr("All"), qsTr("Outdated"), qsTr("Non-Outdated")]
 
 					onCurrentIndexChanged:
 					{
