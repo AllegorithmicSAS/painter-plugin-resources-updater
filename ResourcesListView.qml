@@ -116,7 +116,7 @@ Rectangle
 						
 						AlgLabel
 						{
-							text: "Name : "
+							text: qsTr("Name : ")
 							verticalAlignment: Text.AlignVCenter
 						}
 						
@@ -131,7 +131,7 @@ Rectangle
 						
 						AlgLabel
 						{
-							text: "Shelf : "
+							text: qsTr("Shelf : ")
 							verticalAlignment: Text.AlignVCenter
 						}
 						
@@ -151,7 +151,7 @@ Rectangle
 						{
 							id: resourcePicker
 							refineQuery: queryFilter
-							defaultLabel: "Select new resource"
+							defaultLabel: qsTr("Select new resource")
 							Layout.preferredWidth: Style.widgets.buttonWidth*2
 							Layout.preferredHeight: 40
 							filters: 
