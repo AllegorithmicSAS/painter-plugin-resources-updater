@@ -58,11 +58,13 @@ AlgWindow
 
 				AlgButton
 				{
+          id: pinButton
+
 					property bool pinState: false
 					text: pinState ? qsTr("Unpin window") : qsTr("Pin window")
 					Layout.alignment: Qt.AlignRight
 					Layout.rightMargin: Style.margin
-					Layout.preferredWidth: Style.widgets.buttonWidth
+					Layout.preferredWidth: Math.max(Style.widgets.buttonWidth, pinButton.text.paintedWidth)
 					
 					onClicked:
 					{
