@@ -214,7 +214,7 @@ Rectangle
 						}
 						if (updateSuccessful) 
 						{
-							alg.log.info("Resource \"" + name + "\" has been updated")
+							alg.log.info(qsTr("Resource \"%1\" has been updated").arg(name))
 							url = newUrl
 							resourcePicker.requestUrl("")
 							outdated = false
@@ -314,7 +314,7 @@ Rectangle
 	function updateResourcesList() {
 		try {
 			if(!alg.project.isOpen()) {
-				alg.log.info("No project open, resources updater discarded")
+				alg.log.info(qsTr("No project open, resources updater discarded"))
 				return
 			}
 
