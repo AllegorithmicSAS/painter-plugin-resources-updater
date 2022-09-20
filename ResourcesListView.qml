@@ -314,7 +314,7 @@ Rectangle
 	function updateResourcesList() {
 		try {
 			if(!alg.project.isOpen()) {
-				alg.log.info("No project open, resources updater discarded")
+				alg.log.info(qsTr("No project open, resources updater discarded"))
 				return
 			}
 
