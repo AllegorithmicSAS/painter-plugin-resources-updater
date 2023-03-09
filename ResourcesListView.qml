@@ -214,7 +214,7 @@ Rectangle
 						}
 						if (updateSuccessful) 
 						{
-							alg.log.info("Resource \"" + name + "\" has been updated")
+							alg.log.info(qsTr("Resource \"%1\" has been updated)").arg(name))
 							url = newUrl
 							resourcePicker.requestUrl("")
 							outdated = false
@@ -378,7 +378,7 @@ Rectangle
 			// Update UI
 			//---------------------------------------
 			projectName.text = qsTr("Project : ") + alg.project.name()
-			infoResourcesCount.text = "(" +  resourcesList.count + " resources, " + nbOutdatedResources.toString() + " outdated)"
+			infoResourcesCount.text = qsTr("(%1 resources, %2 outdated)").arg(resourcesList.count, nbOutdatedResources.toString())
 		} catch(err) {
 			alg.log.warn(err.message)
 		}
