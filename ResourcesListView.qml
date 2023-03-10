@@ -214,7 +214,7 @@ Rectangle
 						}
 						if (updateSuccessful) 
 						{
-							alg.log.info(qsTr("Resource \"%1\" has been updated)").arg(name))
+							alg.log.info(qsTr("Resource \"%1\" has been updated").arg(name))
 							url = newUrl
 							resourcePicker.requestUrl("")
 							outdated = false
