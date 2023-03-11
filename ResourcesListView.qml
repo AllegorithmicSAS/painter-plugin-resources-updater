@@ -378,7 +378,7 @@ Rectangle
 			// Update UI
 			//---------------------------------------
 			projectName.text = qsTr("Project : ") + alg.project.name()
-			infoResourcesCount.text = "(" +  resourcesList.count + " resources, " + nbOutdatedResources.toString() + " outdated)"
+			infoResourcesCount.text = qsTr("(%1 resources, %2 outdated)").arg(resourcesList.count).arg(nbOutdatedResources.toString())
 		} catch(err) {
 			alg.log.warn(err.message)
 		}
