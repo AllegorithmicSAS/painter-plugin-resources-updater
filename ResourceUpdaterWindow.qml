@@ -224,7 +224,7 @@ AlgWindow
 					id: infoResourcesCount
 					Layout.fillWidth: true
 
-					text: "(0 resources, 0 outdated)"
+					text: qsTr("(0 resources, 0 outdated)")
 					opacity: 0.75
 				}
 				
