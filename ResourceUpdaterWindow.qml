@@ -57,7 +57,7 @@ AlgWindow
 					text: pinState ? qsTr("Unpin window") : qsTr("Pin window")
 					Layout.alignment: Qt.AlignRight
 					Layout.rightMargin: Style.margin
-					Layout.preferredWidth: Style.widgets.buttonWidth
+					Layout.preferredWidth: Style.widgets.buttonWidth * 1.5
 					
 					onClicked:
 					{
@@ -112,7 +112,7 @@ AlgWindow
 				AlgLabel
 				{
 					Layout.leftMargin: Style.margin
-					text: qsTr("Status : ")
+					text: qsTr("Status: ")
 				}
 				
 				AlgComboBox
@@ -132,7 +132,7 @@ AlgWindow
 				AlgLabel
 				{
 					Layout.leftMargin: Style.margin
-					text: qsTr("Name filter : ")
+					text: qsTr("Name filter: ")
 				}
 				
 				AlgTextInput
@@ -166,7 +166,7 @@ AlgWindow
 				AlgButton
 				{
 					text: qsTr("Top")
-					Layout.preferredWidth: Style.widgets.buttonWidth/2
+					Layout.preferredWidth: Style.widgets.buttonWidth
 					
 					onClicked:
 					{
@@ -177,7 +177,7 @@ AlgWindow
 				AlgButton
 				{
 					text: qsTr("Bottom")
-					Layout.preferredWidth: Style.widgets.buttonWidth/2
+					Layout.preferredWidth: Style.widgets.buttonWidth
 					Layout.rightMargin: Style.margin
 					
 					onClicked:
