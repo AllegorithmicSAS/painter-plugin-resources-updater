@@ -1,6 +1,7 @@
-import QtQuick 2.7
-import QtQuick.Window 2.2
-import QtQuick.Layouts 1.3
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
 import AlgWidgets 2.0
 import AlgWidgets.Style 2.0
 import "."
@@ -30,207 +31,205 @@ Rectangle
 
 	property string filter_text: ""
 
-	AlgScrollView
+	ListView
 	{
-		id: scrollArea
-		anchors.fill: parent
-		anchors.margins: 4
-		maximumFlickVelocity : 1500
-		contentHeight: content.contentHeight
-		
-		ListView
+		id: content
+		Layout.alignment: Qt.AlignCenter
+		orientation: ListView.Vertical;
+		Layout.minimumHeight: contentHeight
+		width: parent.width
+		height: parent.height
+		clip: true
+
+		flickableDirection: Flickable.VerticalFlick
+		boundsBehavior: Flickable.StopAtBounds
+		ScrollBar.vertical: ScrollBar {}
+		ScrollBar.horizontal: ScrollBar {}
+
+		model: ListModel
 		{
-			id: content
-			Layout.minimumHeight: contentHeight
+			id: resourcesList
+		}
 
-			model: ListModel
-			{
-				id: resourcesList
-			}
+		delegate: Rectangle
+		{
+			visible: isResourceVisible(outdated, name)
+			width: resourcesListView.width
+			height: visible ? Style.widgets.resourceItemHeight : 0
 
-			delegate: Rectangle
+			radius: Style.radius
+			color: outdated ? "#662222" : AlgStyle.background.color.mainWindow
+			border.color: AlgStyle.colors.gray(15)
+
+			RowLayout
 			{
-				visible: isResourceVisible(outdated, name)
-				width: scrollArea.viewportWidth
-				height: visible ? Style.widgets.resourceItemHeight : 0
+				anchors.fill: parent
+
+				anchors.leftMargin: Style.margin
+				anchors.rightMargin: Style.margin
 				
-				radius: Style.radius
-				color: outdated ? "#662222" : AlgStyle.background.color.mainWindow
-				border.color: AlgStyle.colors.gray(15)
-				
-				RowLayout
+				Image
 				{
-					anchors.fill: parent
+					source: "image://resources/" + url
+					fillMode: Image.PreserveAspectFit
+					mipmap:true
+					Layout.preferredWidth: Style.widgets.resourceItemHeight - Style.margin*2
+					Layout.preferredHeight: Style.widgets.resourceItemHeight - Style.margin*2
+					sourceSize.width: 512
+					sourceSize.height: 512
 
-					anchors.leftMargin: Style.margin
-					anchors.rightMargin: Style.margin
-					
-					Image
-					{
-						source: "image://resources/" + url
-						fillMode: Image.PreserveAspectFit
-						mipmap:true
-						Layout.preferredWidth: Style.widgets.resourceItemHeight - Style.margin*2
-						Layout.preferredHeight: Style.widgets.resourceItemHeight - Style.margin*2
-						sourceSize.width: 512
-						sourceSize.height: 512
+					MouseArea {
+						anchors.fill: parent
+						hoverEnabled: true
+						cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
 
-						MouseArea {
+						Rectangle
+						{
 							anchors.fill: parent
-							hoverEnabled: true
-							cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
-							
-							Rectangle
-							{
-								anchors.fill: parent
-								visible: parent.containsMouse
-								color: "#FFFFFF"
-								opacity: 0.2
-							}
-
-							onClicked:
-							{
-								resourceInfo.getInfoAboutResource(url)
-							}
+							visible: parent.containsMouse
+							color: "#FFFFFF"
+							opacity: 0.2
 						}
 
-						
+						onClicked:
+						{
+							resourceInfo.getInfoAboutResource(url)
+						}
 					}
-					
+				}
+
+				AlgLabel
+				{
+					text: number
+					horizontalAlignment: Text.AlignRight
+					Layout.rightMargin: Style.margin
+					Layout.preferredWidth: 20
+				}
+
+				GridLayout
+				{
+					columns: 2
 					AlgLabel
 					{
-						text: number
-						horizontalAlignment: Text.AlignRight
-						Layout.rightMargin: Style.margin
-						Layout.preferredWidth: 20
-					}
-					
-					GridLayout
-					{
-						columns: 2
-						
-						AlgLabel
-						{
-							text: qsTr("Name : ")
-							verticalAlignment: Text.AlignVCenter
-						}
-						
-						AlgLabel
-						{
-							text: name
-							Layout.fillWidth: true
-							verticalAlignment: Text.AlignVCenter
-							horizontalAlignment: Text.AlignLeft
-							elide: Text.ElideRight
-						}
-						
-						AlgLabel
-						{
-							text: qsTr("Shelf : ")
-							verticalAlignment: Text.AlignVCenter
-						}
-						
-						AlgLabel
-						{
-							text: shelfName
-							Layout.fillWidth: true
-							verticalAlignment: Text.AlignVCenter
-							horizontalAlignment: Text.AlignLeft
-							elide: Text.ElideRight
-						}
+						text: qsTr("Name : ")
+						verticalAlignment: Text.AlignVCenter
 					}
 
-					ColumnLayout
+					AlgLabel
 					{
-						AlgResourceWidget
-						{
-							id: resourcePicker
-							refineQuery: queryFilter
-							defaultLabel: qsTr("Select new resource")
-							Layout.preferredWidth: Style.widgets.buttonWidth*2
-							Layout.preferredHeight: 40
-							filters: 
-								currentMode == mode_RESOURCES ?
-									AlgResourcePicker.EMITTER         |
-									AlgResourcePicker.ENVIRONMENT     |
-									AlgResourcePicker.LUT             |
-									AlgResourcePicker.FILTER          |
-									AlgResourcePicker.GENERATOR       |
-									AlgResourcePicker.MASK            |
-									AlgResourcePicker.MATERIAL        |
-									AlgResourcePicker.PRESET_BRUSH    |
-									AlgResourcePicker.PRESET_LAYERS   |
-									AlgResourcePicker.PRESET_MASK     |
-									AlgResourcePicker.PRESET_MATERIAL |
-									AlgResourcePicker.PRESET_PARTICLE |
-									AlgResourcePicker.PRESET_TOOL     |
-									AlgResourcePicker.PROCEDURAL      |
-									AlgResourcePicker.RECEIVER        |
-									AlgResourcePicker.TEXTURE         :
-									AlgResourcePicker.SHADER
-							
-							Component.onCompleted:
-							{
-								if(outdated)
-								{
-									requestUrl(newUrl)
-								}
-							}
-							
-							onUrlChanged:
-							{
-								newUrl = url
-							}
-						}
-						
-						AlgButton
-						{
-							Layout.preferredWidth: Style.widgets.buttonWidth*2
-							text: qsTr("Update")
-							enabled: resourcePicker.url !== ""
+						text: name
+						Layout.fillWidth: true
+						verticalAlignment: Text.AlignVCenter
+						horizontalAlignment: Text.AlignLeft
+						elide: Text.ElideRight
+					}
 
-							onClicked:
-							{
-								updateResource()
-							}
-						}
+					AlgLabel
+					{
+						text: qsTr("Shelf : ")
+						verticalAlignment: Text.AlignVCenter
+					}
+
+					AlgLabel
+					{
+						text: shelfName
+						Layout.fillWidth: true
+						verticalAlignment: Text.AlignVCenter
+						horizontalAlignment: Text.AlignLeft
+						elide: Text.ElideRight
 					}
 				}
 
-				function updateResource() {
-					try {
-						if (!visible || newUrl === "") {
-							return false
-						}
-						var updateSuccessful = (currentMode == mode_RESOURCES && alg.resources.updateDocumentResources(url, newUrl))
-						if (!updateSuccessful && currentMode == mode_SHADERS) {
-							try {
-								alg.shaders.updateShaderInstance(id, newUrl)
-								updateSuccessful = true;
-							}
-							catch(err) {
-								alg.log.exception(err)
-							}
-						}
-						if (updateSuccessful) 
-						{
-							alg.log.info(qsTr("Resource \"%1\" has been updated").arg(name))
-							url = newUrl
-							resourcePicker.requestUrl("")
-							outdated = false
-							var resInfo = alg.resources.getResourceInfo(url)
-							name = resInfo.name
-							shelfName = resInfo.shelfName
-							queryFilter = resourcesListView.createQuery(resInfo.type, resInfo.usages)
-							return true
-						}
-					} catch(err) {
-						alg.log.exception(err)
-					}
-					return false
-				}
+				ColumnLayout
+				{
+					AlgResourceWidget
+					{
+						id: resourcePicker
+						refineQuery: queryFilter
+						defaultLabel: qsTr("Select new resource")
+						Layout.preferredWidth: Style.widgets.buttonWidth*2
+						Layout.preferredHeight: 40
+						filters: 
+							currentMode == mode_RESOURCES ?
+								AlgResourcePicker.EMITTER         |
+								AlgResourcePicker.ENVIRONMENT     |
+								AlgResourcePicker.LUT             |
+								AlgResourcePicker.FILTER          |
+								AlgResourcePicker.GENERATOR       |
+								AlgResourcePicker.MASK            |
+								AlgResourcePicker.MATERIAL        |
+								AlgResourcePicker.PRESET_BRUSH    |
+								AlgResourcePicker.PRESET_LAYERS   |
+								AlgResourcePicker.PRESET_MASK     |
+								AlgResourcePicker.PRESET_MATERIAL |
+								AlgResourcePicker.PRESET_PARTICLE |
+								AlgResourcePicker.PRESET_TOOL     |
+								AlgResourcePicker.PROCEDURAL      |
+								AlgResourcePicker.RECEIVER        |
+								AlgResourcePicker.TEXTURE         :
+								AlgResourcePicker.SHADER
 
+						Component.onCompleted:
+						{
+							if(outdated)
+							{
+								requestUrl(newUrl)
+							}
+						}
+
+						onUrlChanged:
+						{
+							newUrl = url
+						}
+					}
+
+					AlgButton
+					{
+						Layout.preferredWidth: Style.widgets.buttonWidth*2
+						text: qsTr("Update")
+						enabled: resourcePicker.url !== ""
+
+						onClicked:
+						{
+							updateResource()
+						}
+					}
+				}
 			}
+
+			function updateResource() {
+				try {
+					if (!visible || newUrl === "") {
+						return false
+					}
+					var updateSuccessful = (currentMode == mode_RESOURCES && alg.resources.updateDocumentResources(url, newUrl))
+					if (!updateSuccessful && currentMode == mode_SHADERS) {
+						try {
+							alg.shaders.updateShaderInstance(id, newUrl)
+							updateSuccessful = true;
+						}
+						catch(err) {
+							alg.log.exception(err)
+						}
+					}
+					if (updateSuccessful) 
+					{
+						alg.log.info(qsTr("Resource \"%1\" has been updated").arg(name))
+						url = newUrl
+						resourcePicker.requestUrl("")
+						outdated = false
+						var resInfo = alg.resources.getResourceInfo(url)
+						name = resInfo.name
+						shelfName = resInfo.shelfName
+						queryFilter = resourcesListView.createQuery(resInfo.type, resInfo.usages)
+						return true
+					}
+				} catch(err) {
+					alg.log.exception(err)
+				}
+				return false
+			}
+
 		}
 	}
 
@@ -238,7 +237,6 @@ Rectangle
 	{
 		id: resourceInfo
 	}
-
 
 	function updateAllResources() {
 		try {
@@ -251,7 +249,7 @@ Rectangle
 			alg.log.warn(err.message)
 		}
 	}
-	
+
 	//Try to find a updated resource in the shelf
 	//Return empty if the resource isn't outdate
 	function findResourceUrlOnShelf(resourceInfo) {
@@ -385,11 +383,10 @@ Rectangle
 	}
 
 	function scrollResourcesListToTop() {
-		scrollArea.contentY = 0
-	}
-	
-	function scrollResourcesListToBottom() {
-		scrollArea.contentY = scrollArea.contentHeight - scrollArea.viewportHeight
+		content.contentY = 0
 	}
 
+	function scrollResourcesListToBottom() {
+		content.contentY = content.contentHeight - content.viewportHeight
+	}
 }

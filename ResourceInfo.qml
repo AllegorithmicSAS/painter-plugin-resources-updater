@@ -9,8 +9,8 @@ AlgPopup
 {
 	id: resourceInfo
 	width: parent.width
-	height: scrollArea.viewportHeight
-	parent: scrollArea
+	height: resourcesListView.viewportHeight
+	parent: resourcesListView
 	visible:false
 	
 	Component.onCompleted:
