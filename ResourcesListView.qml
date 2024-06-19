@@ -387,6 +387,6 @@ Rectangle
 	}
 
 	function scrollResourcesListToBottom() {
-		content.contentY = content.contentHeight - content.viewportHeight
+		content.contentY = content.contentHeight - content.height
 	}
 }
