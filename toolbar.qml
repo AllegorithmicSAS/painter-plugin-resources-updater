@@ -13,6 +13,7 @@ AlgToolBarButton
 		try
 		{
 			windowReference.visible = true
+			windowReference.show()
 			windowReference.refreshInterface()
 			windowReference.raise()
 			windowReference.requestActivate()
